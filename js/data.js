@@ -7,7 +7,7 @@
    baixarem a atualização.
    ========================================================= */
 
-export const CONTENT_VERSION = '2026.10';
+export const CONTENT_VERSION = '2026.10.2';
 
 export const VITAIS_REF = [
   { sigla: 'FC', valor: '60–100', unidade: 'bpm' },
@@ -19,10 +19,17 @@ export const VITAIS_REF = [
 ];
 
 export const CATEGORIAS = [
-  { id: 'avaliacao', nome: 'Avaliação e sinais vitais', desc: 'Sinais vitais, classificação de risco, glicemia e ECG', icon: 'pulse' },
-  { id: 'dispositivos', nome: 'Sondas e dispositivos', desc: 'Acesso venoso, sondas e oxigenoterapia', icon: 'tube' },
-  { id: 'medicacoes', nome: 'Medicações', desc: 'Certos da medicação, cálculos, vias e alta vigilância', icon: 'pill' },
+  { id: 'sondas', nome: 'Sondas', desc: 'SNG, SNE, sonda vesical e aspiração', icon: 'tube' },
+  { id: 'avaliacao', nome: 'Sinais vitais e avaliação', desc: 'Sinais vitais, Glasgow, classificação de risco e glicemia', icon: 'pulse' },
+  { id: 'dispositivos', nome: 'Dispositivos', desc: 'Acesso venoso, oxigênio, cateter central e dreno de tórax', icon: 'drip' },
+  { id: 'curativos', nome: 'Curativos e lesões por pressão', desc: 'Coberturas, técnica de curativo, classificação e prevenção de LP', icon: 'bandage' },
+  { id: 'registro', nome: 'Anotação de enfermagem', desc: 'Regras do registro e modelo pronto', icon: 'notes' },
+  { id: 'medicacoes', nome: 'Medicações', desc: 'Medicações básicas, certos, cálculos, vias e alta vigilância', icon: 'pill' },
+  { id: 'comorbidades', nome: 'Doenças e comorbidades', desc: 'Hipertensão, diabetes, insuficiência cardíaca, DPOC e doença renal', icon: 'heart' },
   { id: 'emergencias', nome: 'Emergências frequentes', desc: 'PCR, dor torácica, AVC, sepse e outras', icon: 'siren' },
+  { id: 'oncologia', nome: 'Oncologia', desc: 'Neutropenia febril, cateter implantado e quimioterapia', icon: 'ribbon' },
+  { id: 'cardio', nome: 'Exames do coração', desc: 'Eletrocardiograma e ecocardiograma', icon: 'ecg' },
+  { id: 'anatomia', nome: 'Anatomia aplicada', desc: 'Veias, músculos para IM, coração e sondagens', icon: 'body' },
 ];
 
 export const TOPICOS = [
@@ -113,7 +120,7 @@ export const TOPICOS = [
   },
   {
     id: 'ecg',
-    cat: 'avaliacao',
+    cat: 'cardio',
     titulo: 'ECG de 12 derivações',
     resumo: 'Posição dos eletrodos e prioridade na dor torácica.',
     tags: ['eletrocardiograma', 'eletrodos', 'precordiais', 'dor torácica'],
@@ -171,7 +178,7 @@ export const TOPICOS = [
   },
   {
     id: 'sng-sne',
-    cat: 'dispositivos',
+    cat: 'sondas',
     titulo: 'Sonda nasogástrica e nasoenteral',
     resumo: 'Diferenças, medida, confirmação de posição e cuidados.',
     tags: ['sng', 'sne', 'sonda', 'dieta', 'drenagem', 'levine', 'dobbhoff'],
@@ -202,7 +209,7 @@ export const TOPICOS = [
   },
   {
     id: 'svd',
-    cat: 'dispositivos',
+    cat: 'sondas',
     titulo: 'Sondagem vesical',
     resumo: 'Demora x alívio, técnica asséptica e prevenção de infecção.',
     tags: ['svd', 'sva', 'foley', 'cateterismo', 'urina', 'itu'],
@@ -553,6 +560,633 @@ export const TOPICOS = [
       ]},
     ],
   },
+  /* ---------------- SONDAS (novo) ---------------- */
+  {
+    id: 'aspiracao',
+    cat: 'sondas',
+    titulo: 'Aspiração de vias aéreas',
+    resumo: 'Sonda de aspiração: técnica, pressão e tempo seguros.',
+    tags: ['sonda de aspiração', 'secreção', 'tot', 'traqueostomia', 'vias aéreas', 'aspirar'],
+    secoes: [
+      { tipo: 'tabela', titulo: 'Referências (adulto)', linhas: [
+        ['Pressão do vácuo', '80–120 mmHg (ajuste conforme protocolo)'],
+        ['Tempo de cada aspiração', 'Até 10–15 segundos'],
+        ['Calibre da sonda', 'Até a metade do diâmetro interno do tubo'],
+      ]},
+      { tipo: 'passos', titulo: 'Passo a passo', itens: [
+        'Avalie a necessidade: ruídos de secreção, queda de SpO₂, tosse ineficaz.',
+        'Higienize as mãos, use EPI (óculos, máscara, luvas) e explique ao paciente.',
+        'Pré-oxigene se prescrito e teste o vácuo.',
+        'Vias aéreas inferiores (tubo, traqueostomia): técnica estéril com luva estéril na mão dominante.',
+        'Introduza a sonda sem aspirar; aspire apenas ao retirar, com movimentos rotatórios.',
+        'Ordem: tubo ou traqueostomia → nariz → boca. Nunca o contrário com a mesma sonda.',
+        'Lave a extensão com água destilada e registre aspecto e volume da secreção.',
+      ]},
+      { tipo: 'alerta', titulo: 'Interrompa e comunique', itens: [
+        'Queda importante de SpO₂, bradicardia ou arritmia durante a aspiração.',
+        'Secreção com sangue vivo.',
+      ]},
+    ],
+  },
+
+  /* ---------------- AVALIAÇÃO (novo) ---------------- */
+  {
+    id: 'glasgow',
+    cat: 'avaliacao',
+    titulo: 'Escala de coma de Glasgow',
+    resumo: 'Avaliação do nível de consciência em 3 a 15 pontos.',
+    tags: ['consciência', 'neurológico', 'tce', 'coma', 'ecg glasgow'],
+    secoes: [
+      { tipo: 'tabela', titulo: 'Abertura ocular (1–4)', linhas: [
+        ['4', 'Espontânea'], ['3', 'Ao som (chamado)'], ['2', 'À pressão'], ['1', 'Ausente'],
+      ]},
+      { tipo: 'tabela', titulo: 'Resposta verbal (1–5)', linhas: [
+        ['5', 'Orientada'], ['4', 'Confusa'], ['3', 'Palavras'], ['2', 'Sons'], ['1', 'Ausente'],
+      ]},
+      { tipo: 'tabela', titulo: 'Resposta motora (1–6)', linhas: [
+        ['6', 'Obedece comandos'], ['5', 'Localiza o estímulo'], ['4', 'Flexão normal (retirada)'],
+        ['3', 'Flexão anormal'], ['2', 'Extensão'], ['1', 'Ausente'],
+      ]},
+      { tipo: 'tabela', titulo: 'Interpretação (TCE)', linhas: [
+        ['13–15', 'Leve'], ['9–12', 'Moderado'], ['3–8', 'Grave: risco para via aérea'],
+      ]},
+      { tipo: 'lista', titulo: 'Bom saber', itens: [
+        'Registre cada componente, não só o total (ex.: AO3 V4 M6 = 13).',
+        'Glasgow-P: subtraia a reatividade pupilar (0 ambas reagem, 1 uma não reage, 2 nenhuma reage).',
+        'Queda de 2 pontos ou mais: comunique imediatamente.',
+      ]},
+    ],
+  },
+
+  /* ---------------- DISPOSITIVOS (novos) ---------------- */
+  {
+    id: 'cvc',
+    cat: 'dispositivos',
+    titulo: 'Cateter venoso central',
+    resumo: 'Cuidados de manutenção para prevenir infecção.',
+    tags: ['cvc', 'acesso central', 'picc', 'curativo', 'infecção de corrente sanguínea'],
+    secoes: [
+      { tipo: 'lista', titulo: 'Cuidados', itens: [
+        'Desinfete as conexões com álcool 70% por fricção (5 a 15 segundos) antes de cada acesso.',
+        'Curativo com gaze: troca a cada 48 h; filme transparente: até 7 dias, ou antes se úmido, solto ou sujo.',
+        'Identifique cada via e mantenha o sistema fechado.',
+        'Avalie diariamente o óstio: hiperemia, secreção, dor.',
+        'Nunca tracione nem reposicione o cateter.',
+      ]},
+      { tipo: 'alerta', titulo: 'Comunique', itens: [
+        'Febre sem outro foco, secreção no óstio ou cateter deslocado.',
+        'Dispneia súbita durante manipulação (risco de embolia gasosa).',
+      ]},
+    ],
+  },
+  {
+    id: 'dreno-torax',
+    cat: 'dispositivos',
+    titulo: 'Dreno de tórax (selo d’água)',
+    resumo: 'Como funciona o sistema e o que observar.',
+    tags: ['drenagem torácica', 'pneumotórax', 'derrame pleural', 'selo dágua', 'frasco'],
+    secoes: [
+      { tipo: 'lista', titulo: 'Funcionamento', itens: [
+        'A haste do frasco fica submersa cerca de 2 cm na água estéril: o ar sai e não volta.',
+        'Oscilação do nível da água com a respiração indica sistema funcionando.',
+        'Borbulhamento contínuo pode indicar escape de ar: comunique.',
+      ]},
+      { tipo: 'passos', titulo: 'Cuidados', itens: [
+        'Mantenha o frasco sempre abaixo do nível do tórax, inclusive no transporte.',
+        'Evite dobras e alças pendentes na extensão.',
+        'Não clampeie o dreno sem ordem: o clampeamento pode causar pneumotórax hipertensivo.',
+        'Marque o nível do líquido e registre volume e aspecto no horário definido.',
+        'Curativo do óstio com técnica asséptica.',
+      ]},
+      { tipo: 'alerta', titulo: 'Emergência', itens: [
+        'Desconexão: mantenha a extremidade em água estéril e chame o enfermeiro.',
+        'Saída acidental do dreno: cubra o orifício com curativo e comunique na hora.',
+        'Dispneia súbita, enfisema subcutâneo ou sangramento intenso.',
+      ]},
+    ],
+  },
+
+  /* ---------------- CURATIVOS E LESÕES ---------------- */
+  {
+    id: 'materiais-curativo',
+    cat: 'curativos',
+    titulo: 'Materiais de curativo e coberturas',
+    resumo: 'Para que serve cada cobertura e quando não usar.',
+    tags: ['cobertura', 'hidrocoloide', 'alginato', 'hidrogel', 'age', 'carvão', 'papaína', 'espuma', 'colagenase', 'sulfadiazina'],
+    secoes: [
+      { tipo: 'lista', titulo: 'Material básico', itens: [
+        'Pacote de curativo (pinças anatômica, dente de rato e Kelly), gaze estéril.',
+        'SF 0,9% morno, seringa de 20 mL e agulha 40×12 para irrigação em jato.',
+        'Luvas de procedimento e estéreis, cobertura indicada e fita adesiva.',
+      ]},
+      { tipo: 'tabela', titulo: 'Coberturas mais usadas', linhas: [
+        ['AGE (ácidos graxos essenciais)', 'Hidrata e protege a pele; prevenção de LP e feridas em granulação'],
+        ['Hidrocoloide', 'Feridas limpas com pouco exsudato; troca até 7 dias. Não usar em feridas infectadas'],
+        ['Hidrogel', 'Amolece necrose e esfacelo em feridas secas (desbridamento autolítico)'],
+        ['Alginato de cálcio', 'Exsudato moderado a intenso e sangramento leve. Precisa de cobertura secundária'],
+        ['Espuma (poliuretano)', 'Exsudato moderado a intenso; protege áreas de pressão'],
+        ['Carvão ativado com prata', 'Feridas infectadas, com odor e exsudato. Não recortar'],
+        ['Filme transparente', 'Proteção de pele íntegra e fixação de cateteres. Não usar em feridas com exsudato'],
+        ['Papaína', 'Desbridamento químico; concentração conforme o tecido (maior para necrose)'],
+        ['Colagenase', 'Desbridamento enzimático de tecido desvitalizado'],
+        ['Sulfadiazina de prata 1%', 'Queimaduras; ação antimicrobiana'],
+      ]},
+      { tipo: 'alerta', titulo: 'Atenção', itens: [
+        'A escolha da cobertura é do enfermeiro, conforme avaliação da ferida e protocolo.',
+        'Cobertura certa na ferida errada atrasa a cicatrização.',
+      ]},
+    ],
+  },
+  {
+    id: 'tecnica-curativo',
+    cat: 'curativos',
+    titulo: 'Avaliação da ferida e técnica de curativo',
+    resumo: 'Tipos de tecido, exsudato e sequência de limpeza.',
+    tags: ['ferida', 'granulação', 'esfacelo', 'necrose', 'exsudato', 'infecção', 'limpeza'],
+    secoes: [
+      { tipo: 'tabela', titulo: 'Tecidos da ferida', linhas: [
+        ['Vermelho vivo', 'Granulação: tecido saudável, proteger'],
+        ['Rosa', 'Epitelização: fase final'],
+        ['Amarelo', 'Esfacelo: tecido desvitalizado, precisa ser removido'],
+        ['Preto ou marrom', 'Necrose (escara): avaliar desbridamento'],
+      ]},
+      { tipo: 'tabela', titulo: 'Exsudato', linhas: [
+        ['Seroso', 'Claro, aquoso'],
+        ['Sanguinolento', 'Vermelho, com sangue'],
+        ['Serossanguinolento', 'Rosado'],
+        ['Purulento', 'Espesso, amarelo-esverdeado: sinal de infecção'],
+      ]},
+      { tipo: 'passos', titulo: 'Sequência do curativo', itens: [
+        'Higienize as mãos, explique o procedimento e posicione o paciente.',
+        'Retire o curativo anterior com luva de procedimento, umedecendo se aderido.',
+        'Avalie: tamanho, tecido, exsudato, odor, bordas e pele ao redor.',
+        'Limpe com SF 0,9% em jato, da área menos contaminada para a mais contaminada.',
+        'Ferida limpa: do centro para as bordas. Ferida infectada: das bordas para o centro.',
+        'Seque a pele ao redor (não o leito), aplique a cobertura e fixe.',
+        'Registre data, avaliação da ferida, cobertura usada e reação do paciente.',
+      ]},
+      { tipo: 'alerta', titulo: 'Sinais de infecção', itens: [
+        'Calor, rubor, edema e dor aumentados.',
+        'Exsudato purulento, odor fétido, aumento da ferida ou febre.',
+      ]},
+    ],
+  },
+  {
+    id: 'lesao-pressao',
+    cat: 'curativos',
+    titulo: 'Lesão por pressão: classificação',
+    resumo: 'Estágios segundo a NPIAP e locais mais comuns.',
+    tags: ['lp', 'úlcera de pressão', 'escara', 'estágio', 'npiap', 'sacral'],
+    secoes: [
+      { tipo: 'tabela', titulo: 'Classificação', linhas: [
+        ['Estágio 1', 'Pele íntegra com eritema que não embranquece à pressão'],
+        ['Estágio 2', 'Perda parcial da pele, com derme exposta (leito rosa, úmido) ou bolha'],
+        ['Estágio 3', 'Perda total da pele; gordura visível, sem expor músculo ou osso'],
+        ['Estágio 4', 'Perda total da pele e tecidos, com exposição de músculo, tendão ou osso'],
+        ['Não classificável', 'Leito coberto por esfacelo ou escara, impedindo ver a profundidade'],
+        ['Tissular profunda', 'Área roxa, marrom ou vermelho-escura persistente, pele íntegra ou bolha com sangue'],
+      ]},
+      { tipo: 'lista', titulo: 'Também existem', itens: [
+        'LP relacionada a dispositivo médico (sondas, máscaras, cateteres, talas).',
+        'LP em mucosas (por tubo, sonda): não recebe estágio.',
+      ]},
+      { tipo: 'lista', titulo: 'Locais mais comuns', itens: [
+        'Sacro e cóccix, calcâneos, trocânteres, ísquios.',
+        'Região occipital, escápulas, cotovelos, maléolos e orelhas.',
+      ]},
+      { tipo: 'alerta', titulo: 'Atenção', itens: [
+        'Não use a classificação em sentido reverso: uma LP estágio 3 que cicatriza não vira estágio 1.',
+        'Toda LP é registrada e notificada conforme o protocolo da instituição.',
+      ]},
+    ],
+  },
+  {
+    id: 'prevencao-lp',
+    cat: 'curativos',
+    titulo: 'Lesão por pressão: prevenção e Braden',
+    resumo: 'Avaliação de risco e medidas de prevenção.',
+    tags: ['braden', 'mudança de decúbito', 'prevenção', 'lp', 'risco'],
+    secoes: [
+      { tipo: 'tabela', titulo: 'Escala de Braden (6 a 23 pontos)', linhas: [
+        ['Avalia', 'Percepção sensorial, umidade, atividade, mobilidade, nutrição, fricção e cisalhamento'],
+        ['15–18', 'Risco baixo'],
+        ['13–14', 'Risco moderado'],
+        ['10–12', 'Risco alto'],
+        ['≤ 9', 'Risco muito alto'],
+      ]},
+      { tipo: 'lista', titulo: 'Medidas de prevenção', itens: [
+        'Avalie o risco na admissão e repita conforme protocolo.',
+        'Mudança de decúbito programada (em geral a cada 2 h), individualizada.',
+        'Cabeceira até 30° quando possível, para reduzir cisalhamento.',
+        'Calcâneos flutuando (travesseiro sob as pernas, não sob os calcanhares).',
+        'Pele limpa, seca e hidratada; controle de umidade (fralda, suor, drenagens).',
+        'Colchão adequado e coxins; não massageie proeminências ósseas avermelhadas.',
+        'Inspecione a pele sob dispositivos a cada turno.',
+      ]},
+    ],
+  },
+
+  /* ---------------- ANOTAÇÃO DE ENFERMAGEM ---------------- */
+  {
+    id: 'anotacao-regras',
+    cat: 'registro',
+    titulo: 'Anotação de enfermagem: regras',
+    resumo: 'O que é, quem faz e como registrar corretamente.',
+    tags: ['registro', 'prontuário', 'evolução', 'cofen', 'rasura', 'carimbo'],
+    secoes: [
+      { tipo: 'tabela', titulo: 'Anotação x evolução', linhas: [
+        ['Anotação', 'Registro do que foi observado e feito, no momento. Toda a equipe de enfermagem'],
+        ['Evolução', 'Análise do estado do paciente nas últimas 24 h e plano. Privativa do enfermeiro'],
+      ]},
+      { tipo: 'lista', titulo: 'Como registrar', itens: [
+        'Data e horário em cada registro, em ordem cronológica.',
+        'Letra legível, linguagem objetiva e técnica, sem abreviações não padronizadas.',
+        'Registre o que foi feito e observado, não o que será feito.',
+        'Inclua o que o paciente refere, entre aspas quando for fala dele.',
+        'Não deixe linhas em branco entre registros.',
+        'Identificação ao final: nome, categoria e número do COREN (Res. COFEN nº 545/2017).',
+        'Estudante: identifique-se como estudante e tenha o registro validado pelo supervisor, conforme a instituição.',
+      ]},
+      { tipo: 'alerta', titulo: 'Nunca', itens: [
+        'Use corretivo, apague ou rasure.',
+        'Errou: passe um traço sobre o erro, escreva “digo” ou “sem efeito” e continue o registro correto.',
+        'Registre por outra pessoa ou antes de realizar o cuidado.',
+      ]},
+    ],
+  },
+  {
+    id: 'anotacao-modelo',
+    cat: 'registro',
+    titulo: 'Anotação de enfermagem: modelo',
+    resumo: 'Roteiro do que observar e exemplo pronto.',
+    tags: ['exemplo', 'admissão', 'roteiro', 'registro', 'céfalo-caudal'],
+    secoes: [
+      { tipo: 'passos', titulo: 'Roteiro (da cabeça aos pés)', itens: [
+        'Nível de consciência e orientação, comportamento.',
+        'Queixas do paciente (dor com escala 0–10, náusea, falta de ar).',
+        'Sinais vitais e oxigenoterapia, se houver.',
+        'Dispositivos: acesso venoso (local, aspecto), sondas, drenos, curativos.',
+        'Alimentação, eliminações (diurese e evacuação) e higiene.',
+        'Procedimentos, medicações e exames realizados.',
+        'Intercorrências e a quem foram comunicadas.',
+      ]},
+      { tipo: 'texto', titulo: 'Exemplo', texto: '29/10/2026 – 14h30 – Paciente no leito 5, consciente, orientado, comunicativo. Refere dor abdominal em epigástrio, nota 6/10. PA 130/80 mmHg, FC 88 bpm, FR 18 irpm, SpO₂ 97% em ar ambiente, Tax 36,5 °C. Acesso venoso periférico em antebraço esquerdo, sem sinais flogísticos, com SF 0,9% a 21 gts/min. Administrada dipirona EV conforme prescrição médica. Diurese espontânea, amarelo-clara. Comunicada a enfermeira responsável sobre a dor. Nome Sobrenome – Estudante de Enfermagem.' },
+    ],
+  },
+
+  /* ---------------- MEDICAÇÕES (novo) ---------------- */
+  {
+    id: 'medicacoes-basicas',
+    cat: 'medicacoes',
+    titulo: 'Medicações básicas do PS',
+    resumo: 'Para que servem e o que observar após administrar.',
+    tags: ['dipirona', 'paracetamol', 'cetoprofeno', 'tramadol', 'morfina', 'ondansetrona', 'metoclopramida', 'buscopan', 'omeprazol', 'dexametasona', 'furosemida', 'prometazina', 'naloxona'],
+    secoes: [
+      { tipo: 'tabela', titulo: 'Medicamento e o que observar', linhas: [
+        ['Dipirona', 'Analgésico e antitérmico. Hipotensão se EV rápido; alergia'],
+        ['Paracetamol', 'Analgésico e antitérmico. Respeitar dose máxima diária; cuidado em hepatopatas'],
+        ['Cetoprofeno', 'Anti-inflamatório (AINE). Gastrite, piora da função renal, alergia a AINE'],
+        ['Tramadol', 'Opioide fraco. Náusea, tontura; infundir lentamente'],
+        ['Morfina', 'Opioide forte, alta vigilância. Depressão respiratória e sonolência; antídoto: naloxona'],
+        ['Ondansetrona', 'Antiemético. Pode alterar o ritmo cardíaco (QT longo)'],
+        ['Metoclopramida', 'Antiemético. Reações extrapiramidais: inquietação, tremor, rigidez'],
+        ['Escopolamina (Buscopan)', 'Antiespasmódico para cólicas. Boca seca, retenção urinária, taquicardia'],
+        ['Omeprazol', 'Protetor gástrico. EV: diluir e infundir conforme o fabricante'],
+        ['Dexametasona, hidrocortisona', 'Corticoides. Elevam a glicemia'],
+        ['Furosemida', 'Diurético. Controle de diurese, hipotensão e potássio baixo'],
+        ['Prometazina', 'Antialérgico, causa sedação. IM profunda; EV pode lesionar gravemente o tecido'],
+      ]},
+      { tipo: 'alerta', titulo: 'Atenção', itens: [
+        'Doses sempre conforme prescrição: o app não traz doses de propósito.',
+        'Pergunte sobre alergias antes de qualquer medicação.',
+        'Após opioide: monitore FR, sonolência e SpO₂.',
+      ]},
+    ],
+  },
+
+  /* ---------------- COMORBIDADES ---------------- */
+  {
+    id: 'has',
+    cat: 'comorbidades',
+    titulo: 'Hipertensão arterial',
+    resumo: 'A comorbidade mais frequente no PS.',
+    tags: ['has', 'pressão alta', 'hipertensão', 'anti-hipertensivo'],
+    secoes: [
+      { tipo: 'lista', titulo: 'O que saber', itens: [
+        'PA persistentemente ≥ 140/90 mmHg.',
+        'Geralmente silenciosa; lesa coração, rins, cérebro e olhos com o tempo.',
+        'Fatores de risco: idade, obesidade, sal, sedentarismo, tabagismo, diabetes.',
+      ]},
+      { tipo: 'lista', titulo: 'Cuidados de enfermagem', itens: [
+        'Afira com técnica correta e após repouso.',
+        'Pergunte quais anti-hipertensivos usa e se tomou hoje.',
+        'Valorize cefaleia intensa, dor torácica, alteração visual ou neurológica.',
+      ]},
+      { tipo: 'texto', titulo: 'Veja também', texto: 'Crise hipertensiva, em Emergências.' },
+    ],
+  },
+  {
+    id: 'diabetes',
+    cat: 'comorbidades',
+    titulo: 'Diabetes mellitus',
+    resumo: 'Tipos, descompensações e cuidados diários.',
+    tags: ['dm', 'diabetes', 'insulina', 'cetoacidose', 'hiperglicemia', 'pé diabético', 'metformina'],
+    secoes: [
+      { tipo: 'tabela', titulo: 'Tipos', linhas: [
+        ['Tipo 1', 'Pâncreas não produz insulina; uso obrigatório de insulina'],
+        ['Tipo 2', 'Resistência à insulina; comprimidos e/ou insulina'],
+      ]},
+      { tipo: 'lista', titulo: 'Descompensações', itens: [
+        'Hipoglicemia: ver tópico em Emergências.',
+        'Hiperglicemia: sede, urina abundante, cansaço, perda de peso.',
+        'Cetoacidose: hálito cetônico (frutado), respiração rápida e profunda, vômitos, desidratação.',
+      ]},
+      { tipo: 'lista', titulo: 'Cuidados', itens: [
+        'Glicemia capilar nos horários prescritos.',
+        'Insulina com seringa própria, rodízio de locais e horário certo em relação à refeição.',
+        'Inspecione os pés: feridas, calos, alteração de cor ou sensibilidade.',
+        'Metformina e contraste iodado: siga o protocolo de suspensão da instituição.',
+      ]},
+    ],
+  },
+  {
+    id: 'insuficiencia-cardiaca',
+    cat: 'comorbidades',
+    titulo: 'Insuficiência cardíaca',
+    resumo: 'Sinais de descompensação e controle hídrico.',
+    tags: ['ic', 'icc', 'congestão', 'edema', 'dispneia', 'balanço hídrico'],
+    secoes: [
+      { tipo: 'lista', titulo: 'Sinais de descompensação', itens: [
+        'Falta de ar ao esforço ou deitado (ortopneia); acorda sem ar à noite.',
+        'Edema de membros inferiores, ganho de peso rápido (1–2 kg em poucos dias).',
+        'Estertores (crepitações) na ausculta, cansaço intenso.',
+      ]},
+      { tipo: 'lista', titulo: 'Cuidados', itens: [
+        'Cabeceira elevada.',
+        'Balanço hídrico e peso diário, no mesmo horário e balança.',
+        'Restrição de líquidos e sal conforme prescrição.',
+        'Em uso de diurético: atenção a hipotensão e potássio.',
+      ]},
+    ],
+  },
+  {
+    id: 'dpoc',
+    cat: 'comorbidades',
+    titulo: 'DPOC',
+    resumo: 'Doença pulmonar crônica: cuidado com o oxigênio.',
+    tags: ['dpoc', 'enfisema', 'bronquite crônica', 'tabagismo', 'oxigênio', 'retenção de co2'],
+    secoes: [
+      { tipo: 'lista', titulo: 'O que saber', itens: [
+        'Tosse crônica, expectoração e falta de ar progressiva.',
+        'Principal causa: tabagismo.',
+        'Exacerbação: piora da falta de ar, mais secreção ou mudança de cor.',
+      ]},
+      { tipo: 'alerta', titulo: 'Oxigênio', itens: [
+        'Alvo de SpO₂ entre 88 e 92%: oxigênio em excesso pode reter CO₂ e causar sonolência.',
+        'Prefira dispositivos com FiO₂ controlada (Venturi), conforme prescrição.',
+      ]},
+      { tipo: 'lista', titulo: 'Cuidados', itens: [
+        'Posição sentada ou semissentada.',
+        'Oriente o uso correto do inalador (com espaçador quando indicado).',
+        'Observe sonolência e confusão: podem indicar retenção de CO₂.',
+      ]},
+    ],
+  },
+  {
+    id: 'drc',
+    cat: 'comorbidades',
+    titulo: 'Doença renal crônica',
+    resumo: 'Fístula, controle hídrico e potássio.',
+    tags: ['drc', 'insuficiência renal', 'hemodiálise', 'fístula', 'potássio', 'diálise'],
+    secoes: [
+      { tipo: 'lista', titulo: 'O que saber', itens: [
+        'Perda progressiva da função dos rins; casos avançados fazem diálise.',
+        'Principais causas: diabetes e hipertensão.',
+      ]},
+      { tipo: 'alerta', titulo: 'Fístula arteriovenosa', itens: [
+        'Não afira PA, não puncione e não garroteie o braço da fístula.',
+        'Palpe o frêmito (vibração): se ausente, comunique.',
+      ]},
+      { tipo: 'lista', titulo: 'Cuidados', itens: [
+        'Balanço hídrico e peso; restrição de líquidos conforme prescrição.',
+        'Atenção ao potássio alto: fraqueza, arritmia.',
+        'Muitas medicações têm dose ajustada: confira sempre a prescrição.',
+      ]},
+    ],
+  },
+
+  /* ---------------- ONCOLOGIA ---------------- */
+  {
+    id: 'neutropenia-febril',
+    cat: 'oncologia',
+    titulo: 'Neutropenia febril',
+    resumo: 'Emergência oncológica: antibiótico em até 1 hora.',
+    tags: ['febre', 'quimioterapia', 'neutropenia', 'imunossuprimido', 'oncologia'],
+    secoes: [
+      { tipo: 'tabela', titulo: 'Definição', linhas: [
+        ['Febre', '≥ 38,3 °C em medida única ou ≥ 38 °C mantida por 1 hora'],
+        ['Neutropenia', 'Neutrófilos < 500/mm³ (ou queda esperada para esse nível)'],
+      ]},
+      { tipo: 'passos', titulo: 'Primeiras ações', itens: [
+        'Paciente em quimioterapia com febre: trate como emergência e comunique já.',
+        'Sinais vitais completos e avaliação de sinais de sepse.',
+        'Coleta de hemoculturas e exames conforme prescrição.',
+        'Antibiótico em até 1 hora da chegada.',
+        'Precauções para proteção do paciente conforme protocolo.',
+      ]},
+      { tipo: 'alerta', titulo: 'Nunca', itens: [
+        'Afira temperatura retal ou faça procedimentos retais.',
+        'Espere o resultado do hemograma para iniciar o atendimento.',
+      ]},
+    ],
+  },
+  {
+    id: 'cateter-implantado',
+    cat: 'oncologia',
+    titulo: 'Cateter totalmente implantado',
+    resumo: 'Port-a-cath: punção, flush e manutenção.',
+    tags: ['port-a-cath', 'portocath', 'agulha de huber', 'quimioterapia', 'flush', 'cvc'],
+    secoes: [
+      { tipo: 'passos', titulo: 'Pontos-chave', itens: [
+        'Punção com técnica asséptica, usando apenas agulha de Huber (não cortante).',
+        'Confirme refluxo de sangue antes de infundir.',
+        'Use seringa de 10 mL ou maior, para não gerar pressão excessiva.',
+        'Flush com SF 0,9% em técnica pulsátil (turbilhonamento) antes e depois das medicações.',
+        'Heparinização ou selo conforme protocolo ao retirar a agulha.',
+      ]},
+      { tipo: 'alerta', titulo: 'Comunique', itens: [
+        'Ausência de refluxo, resistência ao flush ou dor durante a infusão.',
+        'Edema, hiperemia ou secreção no local do reservatório.',
+      ]},
+    ],
+  },
+  {
+    id: 'extravasamento',
+    cat: 'oncologia',
+    titulo: 'Extravasamento de quimioterápico',
+    resumo: 'Reconhecer cedo e agir conforme o protocolo.',
+    tags: ['vesicante', 'irritante', 'quimioterapia', 'extravasamento', 'necrose'],
+    secoes: [
+      { tipo: 'lista', titulo: 'Sinais', itens: [
+        'Dor, ardência, edema ou vermelhidão no local da punção.',
+        'Diminuição da velocidade de infusão ou ausência de refluxo.',
+      ]},
+      { tipo: 'passos', titulo: 'Conduta inicial', itens: [
+        'Pare a infusão imediatamente.',
+        'Não retire o cateter ainda: aspire o resíduo do medicamento pelo próprio cateter.',
+        'Retire o cateter e eleve o membro.',
+        'Compressa fria ou quente conforme o medicamento e o protocolo da instituição.',
+        'Comunique, delimite a área com caneta e registre tudo.',
+      ]},
+    ],
+  },
+  {
+    id: 'cuidados-oncologia',
+    cat: 'oncologia',
+    titulo: 'Segurança e cuidados gerais',
+    resumo: 'Proteção da equipe, efeitos da quimioterapia e emergências.',
+    tags: ['quimioterapia', 'mucosite', 'epi', 'excretas', 'síndrome de lise tumoral', 'compressão medular', 'dor oncológica'],
+    secoes: [
+      { tipo: 'lista', titulo: 'Proteção da equipe', itens: [
+        'Quimioterápicos são preparados em área própria; use os EPIs do protocolo ao administrar.',
+        'Excretas de pacientes em quimioterapia (urina, vômito, fezes) exigem luvas e avental, em geral por 48 h após a dose.',
+      ]},
+      { tipo: 'lista', titulo: 'Efeitos frequentes', itens: [
+        'Náuseas e vômitos: antiemético nos horários prescritos.',
+        'Mucosite: higiene oral suave, escova macia.',
+        'Fadiga, queda de cabelo, risco de sangramento e de infecção.',
+      ]},
+      { tipo: 'alerta', titulo: 'Emergências oncológicas', itens: [
+        'Síndrome da veia cava superior: edema de face e pescoço, falta de ar.',
+        'Compressão medular: dor nas costas com fraqueza nas pernas ou perda de controle urinário.',
+        'Hipercalcemia: confusão, sede, constipação.',
+        'Síndrome de lise tumoral: alteração da diurese, arritmias.',
+      ]},
+    ],
+  },
+
+  /* ---------------- EXAMES DO CORAÇÃO (novo) ---------------- */
+  {
+    id: 'ecocardiograma',
+    cat: 'cardio',
+    titulo: 'Ecocardiograma',
+    resumo: 'O ultrassom do coração: tipos e preparo do paciente.',
+    tags: ['eco', 'ecocardiograma', 'ultrassom', 'transesofágico', 'fração de ejeção', 'estresse'],
+    secoes: [
+      { tipo: 'tabela', titulo: 'ECG x Ecocardiograma', linhas: [
+        ['ECG', 'Registra a atividade elétrica do coração (ritmo, isquemia)'],
+        ['Ecocardiograma', 'Ultrassom: mostra estrutura, válvulas, força de contração e derrame pericárdico'],
+      ]},
+      { tipo: 'tabela', titulo: 'Tipos', linhas: [
+        ['Transtorácico', 'Transdutor no tórax. Não invasivo, sem jejum'],
+        ['Transesofágico', 'Sonda pelo esôfago, com sedação. Exige jejum'],
+        ['De estresse', 'Com esforço físico ou medicamento (ex.: dobutamina)'],
+      ]},
+      { tipo: 'passos', titulo: 'Preparo para o transesofágico', itens: [
+        'Confira jejum conforme orientação do serviço e o termo de consentimento.',
+        'Acesso venoso periférico e retirada de próteses dentárias.',
+        'Monitorização de SpO₂, FC e PA durante e após a sedação.',
+        'Após o exame: nada por boca até o reflexo de deglutição voltar (anestesia da garganta).',
+      ]},
+      { tipo: 'lista', titulo: 'Termo que aparece no laudo', itens: [
+        'Fração de ejeção (FE): quanto do sangue o ventrículo esquerdo bombeia a cada batimento. Valores baixos indicam coração “fraco”.',
+      ]},
+    ],
+  },
+
+  /* ---------------- ANATOMIA APLICADA ---------------- */
+  {
+    id: 'anatomia-veias',
+    cat: 'anatomia',
+    titulo: 'Veias do membro superior',
+    resumo: 'Onde puncionar para acesso e coleta.',
+    tags: ['veia', 'cefálica', 'basílica', 'intermédia', 'mediana', 'fossa cubital', 'punção', 'coleta'],
+    secoes: [
+      { tipo: 'tabela', titulo: 'Principais veias', linhas: [
+        ['Metacarpais dorsais', 'Dorso da mão: boas para começar pela região distal'],
+        ['Cefálica', 'Face lateral (lado do polegar) do antebraço e braço; calibrosa'],
+        ['Basílica', 'Face medial (lado do dedo mínimo); próxima a nervos e artéria'],
+        ['Intermédia do cotovelo (mediana)', 'Fossa cubital: preferida para coleta de sangue'],
+      ]},
+      { tipo: 'lista', titulo: 'Dicas', itens: [
+        'Para acesso de permanência, evite a fossa cubital (área de flexão).',
+        'Palpe: veia boa é elástica e reenche após pressão.',
+        'Prefira o membro não dominante quando possível.',
+      ]},
+    ],
+  },
+  {
+    id: 'anatomia-im',
+    cat: 'anatomia',
+    titulo: 'Músculos para injeção IM',
+    resumo: 'Como localizar cada região com segurança.',
+    tags: ['deltoide', 'ventroglútea', 'hochstetter', 'vasto lateral', 'dorsoglútea', 'intramuscular'],
+    secoes: [
+      { tipo: 'tabela', titulo: 'Localização', linhas: [
+        ['Deltoide', 'Cerca de 3 a 5 cm (2 a 3 dedos) abaixo do acrômio, na face lateral do braço'],
+        ['Ventroglútea (Hochstetter)', 'Palma no trocânter maior, indicador na espinha ilíaca anterossuperior, médio afastado: aplique no centro do “V”'],
+        ['Vasto lateral', 'Terço médio da face anterolateral da coxa'],
+        ['Dorsoglútea', 'Quadrante superior externo do glúteo'],
+      ]},
+      { tipo: 'alerta', titulo: 'Por que a ventroglútea é preferida', itens: [
+        'Longe de grandes vasos e nervos; a dorsoglútea tem risco de atingir o nervo ciático.',
+      ]},
+    ],
+  },
+  {
+    id: 'anatomia-coracao',
+    cat: 'anatomia',
+    titulo: 'Coração, tórax e pulsos',
+    resumo: 'Circulação, focos de ausculta e pulsos periféricos.',
+    tags: ['coração', 'circulação', 'ausculta', 'focos', 'pulso', 'ângulo de louis', 'intercostal'],
+    secoes: [
+      { tipo: 'passos', titulo: 'Caminho do sangue', itens: [
+        'Veias cavas → átrio direito → valva tricúspide → ventrículo direito.',
+        'Valva pulmonar → artéria pulmonar → pulmões (troca gasosa).',
+        'Veias pulmonares → átrio esquerdo → valva mitral → ventrículo esquerdo.',
+        'Valva aórtica → aorta → corpo.',
+      ]},
+      { tipo: 'tabela', titulo: 'Focos de ausculta', linhas: [
+        ['Aórtico', '2º espaço intercostal, borda direita do esterno'],
+        ['Pulmonar', '2º espaço intercostal, borda esquerda do esterno'],
+        ['Tricúspide', 'Borda esternal esquerda inferior (4º–5º espaço)'],
+        ['Mitral', '5º espaço intercostal, linha hemiclavicular esquerda'],
+      ]},
+      { tipo: 'lista', titulo: 'Para contar os espaços intercostais', itens: [
+        'Ângulo de Louis (saliência do esterno) fica na altura da 2ª costela; o espaço logo abaixo é o 2º.',
+      ]},
+      { tipo: 'tabela', titulo: 'Pulsos', linhas: [
+        ['Carotídeo', 'Pescoço, ao lado da traqueia (usado na PCR)'],
+        ['Braquial', 'Face medial do braço, acima do cotovelo'],
+        ['Radial', 'Punho, lado do polegar'],
+        ['Femoral', 'Região inguinal'],
+        ['Poplíteo', 'Atrás do joelho'],
+        ['Pedioso e tibial posterior', 'Dorso do pé e atrás do maléolo medial'],
+      ]},
+    ],
+  },
+  {
+    id: 'anatomia-sondagens',
+    cat: 'anatomia',
+    titulo: 'Anatomia para sondagens',
+    resumo: 'Trato urinário e digestivo aplicados às sondas.',
+    tags: ['uretra', 'bexiga', 'esôfago', 'estômago', 'piloro', 'sondagem'],
+    secoes: [
+      { tipo: 'tabela', titulo: 'Uretra', linhas: [
+        ['Feminina', 'Curta (cerca de 4 cm): maior risco de infecção urinária'],
+        ['Masculina', 'Longa (cerca de 18–20 cm) e com curvas: elevar o pênis facilita a passagem da sonda'],
+      ]},
+      { tipo: 'tabela', titulo: 'Trato digestivo', linhas: [
+        ['Esôfago', 'Atrás da traqueia: por isso a sonda pode ir para a via aérea'],
+        ['Estômago', 'Destino da SNG'],
+        ['Piloro', 'Saída do estômago; a SNE passa por ele até o duodeno ou jejuno'],
+      ]},
+      { tipo: 'lista', titulo: 'Relação com a prática', itens: [
+        'A medida nariz–orelha–xifoide estima a distância até o estômago.',
+        'Flexionar o pescoço durante a passagem ajuda a fechar a via aérea e direcionar a sonda para o esôfago.',
+      ]},
+    ],
+  },
 ];
 
 export const SIMULADOS = [
@@ -651,5 +1285,93 @@ export const SIMULADOS = [
     opcoes: ['Até 10 minutos', 'Até 30 minutos', 'Até 1 hora', 'Após avaliação médica'],
     correta: 0,
     explicacao: 'Dor torácica sugestiva de síndrome coronariana: ECG de 12 derivações em até 10 minutos da chegada.',
+  },
+  {
+    id: 'q13', topico: 'lesao-pressao',
+    caso: 'Paciente acamado apresenta área avermelhada na região sacral, com pele íntegra, que não clareia ao pressionar com o dedo.',
+    pergunta: 'Qual a classificação da lesão?',
+    opcoes: ['Estágio 1', 'Estágio 2', 'Estágio 3', 'Tissular profunda'],
+    correta: 0,
+    explicacao: 'Estágio 1: pele íntegra com eritema que não embranquece. No estágio 2 já há perda parcial da pele.',
+  },
+  {
+    id: 'q14', topico: 'prevencao-lp',
+    caso: 'Na admissão, a escala de Braden de uma paciente idosa resultou em 11 pontos.',
+    pergunta: 'Como se classifica o risco para lesão por pressão?',
+    opcoes: ['Sem risco', 'Risco baixo', 'Risco alto', 'Risco muito alto'],
+    correta: 2,
+    explicacao: 'Braden de 10 a 12 indica risco alto. Quanto menor a pontuação, maior o risco.',
+  },
+  {
+    id: 'q15', topico: 'materiais-curativo',
+    caso: 'Ferida com exsudato abundante e pequeno sangramento no leito.',
+    pergunta: 'Qual cobertura é mais indicada?',
+    opcoes: ['Filme transparente', 'Hidrogel', 'Alginato de cálcio', 'Hidrocoloide'],
+    correta: 2,
+    explicacao: 'O alginato absorve exsudato moderado a intenso e ajuda na hemostasia. Filme e hidrocoloide não são para muito exsudato; hidrogel é para feridas secas.',
+  },
+  {
+    id: 'q16', topico: 'anotacao-regras',
+    caso: 'Ao fazer a anotação, você escreve o membro errado do acesso venoso.',
+    pergunta: 'Como corrigir?',
+    opcoes: ['Usar corretivo e reescrever', 'Rasurar até ficar ilegível', 'Passar um traço sobre o erro, escrever “digo” e registrar o correto', 'Arrancar a folha e refazer'],
+    correta: 2,
+    explicacao: 'O prontuário é documento legal: o erro deve continuar legível, com um traço e a palavra “digo” ou “sem efeito”.',
+  },
+  {
+    id: 'q17', topico: 'neutropenia-febril',
+    caso: 'Paciente em quimioterapia chega ao PS com temperatura de 38,5 °C.',
+    pergunta: 'Qual a conduta correta?',
+    opcoes: ['Dar antitérmico e liberar', 'Tratar como emergência: antibiótico em até 1 hora', 'Aguardar 24 h de observação', 'Aferir temperatura retal para confirmar'],
+    correta: 1,
+    explicacao: 'Neutropenia febril é emergência oncológica. Antibiótico em até 1 hora; temperatura retal é contraindicada.',
+  },
+  {
+    id: 'q18', topico: 'glasgow',
+    caso: 'Paciente abre os olhos à pressão, emite apenas sons e retira o membro ao estímulo.',
+    pergunta: 'Qual o escore de Glasgow?',
+    opcoes: ['6', '8', '10', '12'],
+    correta: 1,
+    explicacao: 'Abertura ocular à pressão (2) + sons (2) + flexão normal/retirada (4) = 8: considerado grave.',
+  },
+  {
+    id: 'q19', topico: 'dreno-torax',
+    caso: 'Paciente com dreno de tórax em selo d’água será levado para o raio X.',
+    pergunta: 'Qual o cuidado correto no transporte?',
+    opcoes: ['Clampear o dreno durante todo o trajeto', 'Manter o frasco abaixo do nível do tórax, sem clampear', 'Colocar o frasco sobre a maca, ao lado do tórax', 'Esvaziar o frasco antes de sair'],
+    correta: 1,
+    explicacao: 'O frasco sempre abaixo do tórax impede o retorno do líquido. Clampear sem ordem pode causar pneumotórax hipertensivo.',
+  },
+  {
+    id: 'q20', topico: 'medicacoes-basicas',
+    caso: 'Após receber morfina, o paciente está muito sonolento, com FR de 8 irpm.',
+    pergunta: 'Qual o antídoto que deve estar disponível?',
+    opcoes: ['Flumazenil', 'Naloxona', 'Atropina', 'Glicose 50%'],
+    correta: 1,
+    explicacao: 'Naloxona reverte a depressão respiratória por opioides. Flumazenil é para benzodiazepínicos.',
+  },
+  {
+    id: 'q21', topico: 'ecocardiograma',
+    caso: 'Paciente acabou de fazer ecocardiograma transesofágico e pede água.',
+    pergunta: 'Qual a orientação correta?',
+    opcoes: ['Liberar água imediatamente', 'Aguardar o retorno do reflexo de deglutição', 'Oferecer apenas alimento pastoso', 'Manter jejum por 24 horas'],
+    correta: 1,
+    explicacao: 'A garganta é anestesiada no exame. Antes do retorno da deglutição há risco de aspiração.',
+  },
+  {
+    id: 'q22', topico: 'anatomia-veias',
+    caso: 'Você precisa coletar sangue para exames na fossa cubital.',
+    pergunta: 'Qual veia é preferida nessa região?',
+    opcoes: ['Jugular externa', 'Intermédia do cotovelo (mediana)', 'Safena magna', 'Metacarpal dorsal'],
+    correta: 1,
+    explicacao: 'A intermédia do cotovelo é calibrosa, superficial e fica longe de nervos importantes.',
+  },
+  {
+    id: 'q23', topico: 'aspiracao',
+    caso: 'Durante a aspiração da cânula de traqueostomia, a SpO₂ do paciente começa a cair.',
+    pergunta: 'Qual é o tempo máximo recomendado para cada aspiração?',
+    opcoes: ['Até 10–15 segundos', 'Até 30 segundos', 'Até 1 minuto', 'Até sair toda a secreção'],
+    correta: 0,
+    explicacao: 'Aspirações longas causam hipóxia. Cada passagem deve durar até 10–15 segundos, com intervalo para recuperar.',
   },
 ];
