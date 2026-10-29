@@ -15,6 +15,13 @@ const ICON = {
   pulse: svg('<path d="M3 12h4l2-6 4 12 2-6h6"/>'),
   tube: svg('<path d="M6 3v7a4 4 0 0 0 8 0V7a2 2 0 0 1 4 0v14"/><circle cx="6" cy="3" r="0.5"/><path d="M15 21h6"/>'),
   pill: svg('<rect x="2.5" y="8.5" width="19" height="7" rx="3.5" transform="rotate(-45 12 12)"/><path d="m8.5 8.5 7 7"/>'),
+  drip: svg('<path d="M8 2h8v6a4 4 0 0 1-8 0z"/><path d="M12 12v4"/><path d="M12 16c0 3 3 3 3 5"/><path d="M10 5h4"/>'),
+  bandage: svg('<rect x="2" y="7.5" width="20" height="9" rx="4.5" transform="rotate(-45 12 12)"/><path d="M10 10h.01M14 10h.01M10 14h.01M14 14h.01"/>'),
+  notes: svg('<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 12h7M9 16h5"/>'),
+  heart: svg('<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/>'),
+  ribbon: svg('<path d="M12 3a4 4 0 0 0-4 4c0 3 4 7 4 7s4-4 4-7a4 4 0 0 0-4-4z"/><path d="m10 12-4 9 3-1 2 2 1.5-6M14 12l4 9-3-1-2 2-1.5-6"/>'),
+  ecg: svg('<path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/><path d="M7 11h3l1-2 2 4 1-2h3"/>'),
+  body: svg('<circle cx="12" cy="4.5" r="2"/><path d="M5 9h14"/><path d="M12 9v6"/><path d="m9 22 3-7 3 7"/>'),
   siren: svg('<path d="M7 18v-6a5 5 0 0 1 10 0v6"/><path d="M5 18h14v3H5z"/><path d="M12 3v2M4.2 6.2l1.4 1.4M19.8 6.2l-1.4 1.4"/>'),
   home: svg('<path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/>'),
   search: svg('<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>'),
@@ -34,12 +41,19 @@ const ICON = {
 
 /* ---------- Armazenamento local (progresso do aluno) ---------- */
 const STORE_KEY = 'pes:estado:v1';
-const defaultState = () => ({ revisados: {}, favoritos: [], quiz: { melhor: null, tentativas: 0, ultima: null }, tema: 'auto' });
+const QUIZ_SIZE = 10; // questões sorteadas por rodada
+const defaultState = () => ({ revisados: {}, favoritos: [], quiz: { melhorPct: null, tentativas: 0, ultima: null }, tema: 'auto' });
 
 function loadState() {
   try {
     const raw = localStorage.getItem(STORE_KEY);
-    return raw ? { ...defaultState(), ...JSON.parse(raw) } : defaultState();
+    if (!raw) return defaultState();
+    const st = { ...defaultState(), ...JSON.parse(raw) };
+    // migração da versão 1.0 (guardava acertos em 12 questões)
+    if (st.quiz && st.quiz.melhorPct === undefined) {
+      st.quiz.melhorPct = typeof st.quiz.melhor === 'number' ? Math.round((st.quiz.melhor / 12) * 100) : null;
+    }
+    return st;
   } catch {
     return defaultState();
   }
@@ -157,7 +171,7 @@ const views = {
           const lista = topicsOf(c.id);
           const ok = lista.filter((t) => isRevisado(t.id)).length;
           return `<a class="cat-item" href="#cat-${c.id}">
-            <span class="cat-icon">${ICON[c.icon]}</span>
+            <span class="cat-icon">${ICON[c.icon] || ICON.notes}</span>
             <span><h3>${esc(c.nome)}</h3><p>${esc(c.desc)}</p></span>
             <span class="count ${ok === lista.length ? 'check' : ''}" aria-label="${ok} de ${lista.length} revisados">${ok}/${lista.length}</span>
           </a>`;
@@ -166,7 +180,7 @@ const views = {
 
       <h2 class="section-title">Ferramentas</h2>
       <div class="tools">
-        <a class="tool" href="#simulados">${ICON.quiz}<strong>Simulados</strong><span>${SIMULADOS.length} casos fictícios</span></a>
+        <a class="tool" href="#simulados">${ICON.quiz}<strong>Simulados</strong><span>${QUIZ_SIZE} casos por rodada</span></a>
         <a class="tool" href="#calculadora">${ICON.calc}<strong>Gotejamento</strong><span>Calcule gotas e mL/h</span></a>
       </div>
 
@@ -224,10 +238,10 @@ const views = {
   simulados() {
     const q = ui.quiz;
     if (!q) {
-      const m = state.quiz.melhor;
+      const m = state.quiz.melhorPct;
       return `
-        <div class="page-head"><h2>Simulados</h2><p>${SIMULADOS.length} casos fictícios do Pronto-Socorro, com explicação de cada resposta.</p></div>
-        ${m !== null ? `<div class="stat-grid" style="margin-bottom:16px"><div class="stat"><b>${m}/${SIMULADOS.length}</b><span>Melhor resultado</span></div><div class="stat"><b>${state.quiz.tentativas}</b><span>Tentativas</span></div></div>` : ''}
+        <div class="page-head"><h2>Simulados</h2><p>A cada rodada, ${QUIZ_SIZE} casos fictícios sorteados entre ${SIMULADOS.length}, com explicação de cada resposta.</p></div>
+        ${m !== null ? `<div class="stat-grid" style="margin-bottom:16px"><div class="stat"><b>${m}%</b><span>Melhor resultado</span></div><div class="stat"><b>${state.quiz.tentativas}</b><span>Tentativas</span></div></div>` : ''}
         <button type="button" class="btn primary" style="width:100%" data-action="quiz-iniciar">Começar simulado</button>
       `;
     }
@@ -281,7 +295,7 @@ const views = {
         <div class="meter" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><span style="width:${pct}%"></span></div>
       </section>
       <div class="stat-grid">
-        <div class="stat"><b>${state.quiz.melhor !== null ? `${state.quiz.melhor}/${SIMULADOS.length}` : '—'}</b><span>Melhor simulado</span></div>
+        <div class="stat"><b>${state.quiz.melhorPct !== null ? `${state.quiz.melhorPct}%` : '—'}</b><span>Melhor simulado</span></div>
         <div class="stat"><b>${state.favoritos.length}</b><span>Favoritos</span></div>
       </div>
       ${pendentes.length ? `<h2 class="section-title">Ainda não revisados</h2><ul class="topic-list">${pendentes.map(topicItem).join('')}</ul>` : `<p class="empty"><strong>Todos os temas revisados</strong>Faça um simulado para testar o que aprendeu.</p>`}
@@ -418,7 +432,9 @@ document.addEventListener('click', (e) => {
   }
   if (action === 'sugestao') { ui.query = el.dataset.q; $('#q-page').value = ui.query; renderResults(); }
   if (action === 'quiz-iniciar') {
-    const ordem = SIMULADOS.map((_, i) => i).sort(() => Math.random() - 0.5);
+    const todas = SIMULADOS.map((_, i) => i);
+    for (let i = todas.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [todas[i], todas[j]] = [todas[j], todas[i]]; }
+    const ordem = todas.slice(0, QUIZ_SIZE);
     ui.quiz = { ordem, i: 0, resposta: null, acertos: 0, erros: [] };
     render();
   }
@@ -432,8 +448,9 @@ document.addEventListener('click', (e) => {
     const q = ui.quiz; q.i++; q.resposta = null;
     if (q.i >= q.ordem.length) {
       state.quiz.tentativas++;
-      state.quiz.ultima = q.acertos;
-      state.quiz.melhor = Math.max(state.quiz.melhor ?? 0, q.acertos);
+      const pct = Math.round((q.acertos / q.ordem.length) * 100);
+      state.quiz.ultima = pct;
+      state.quiz.melhorPct = Math.max(state.quiz.melhorPct ?? 0, pct);
       saveState();
     }
     render();
