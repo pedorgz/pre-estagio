@@ -9,7 +9,7 @@
    IMPORTANTE: ao mudar qualquer conteúdo, aumente CACHE_VERSION.
    ========================================================= */
 
-const CACHE_VERSION = 'pes-v1.0.0';
+const CACHE_VERSION = 'pes-v1.1.0';
 
 const PRECACHE = [
   './',
